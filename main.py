@@ -1,15 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-import wikipediaapi
-from dotenv import load_dotenv
-
-import pandas as pd
-import numpy as np
-from sentence_transformers import SentenceTransformer
-import torch
+from routes import test_supabase
 
 app = FastAPI()
+
+app.include_router(test_supabase.router)
 
 origins = ["http://localhost:3000"]
 
@@ -20,6 +16,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
 
 @app.get("/")
 def home():
