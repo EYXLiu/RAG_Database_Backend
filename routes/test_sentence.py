@@ -8,4 +8,4 @@ async def get():
     embd = SentenceTransformer(model_name_or_path='Lajavaness/bilingual-embedding-base', trust_remote_code=True)
     query = "Yes"
     query_embd = embd.encode(query)
-    return query_embd
+    return { "embedding": query_embd.tolist() }

@@ -1,11 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from routes import test_supabase
+from routes import test_supabase, test_sentence
 
 app = FastAPI()
 
 app.include_router(test_supabase.router)
+app.include_router(test_sentence.router)
 
 origins = ["http://localhost:3000"]
 
