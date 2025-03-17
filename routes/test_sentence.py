@@ -1,14 +1,21 @@
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from sentence_transformers import SentenceTransformer
+from typing import List
+
 
 router = APIRouter()
 
 class SentenceRequest(BaseModel):
-    text: str
+    embd: List[str]
 
 @router.get("/sentence")
 async def get(request: SentenceRequest):
-    embd = SentenceTransformer(model_name_or_path='Lajavaness/bilingual-embedding-small', trust_remote_code=True)
-    query_embd = embd.encode(request.text)
-    return { "embedding": query_embd.tolist() }
+    query_embd = request.embd
+    print(query_embd)
+    return { "embedding": query_embd }
+
+@router.post("/sentence")
+async def post(request: SentenceRequest):
+    query_embd = request.embd
+    return { "embedding": query_embd }
