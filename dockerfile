@@ -1,12 +1,12 @@
 FROM python:3.13-slim
 
-WORKDIR /
+WORKDIR /app
+
+COPY .. .
 
 RUN python -m venv venv && \
     . venv/bin/activate && \
     pip install --no-cache-dir -r requirements.txt
-
-COPY . .
 
 EXPOSE 8000
 
