@@ -7,12 +7,12 @@ from typing import List
 router = APIRouter()
 
 class SentenceRequest(BaseModel):
-    embd: List[str]
+    embd: str
 
 @router.get("/sentence")
 async def get(request: SentenceRequest):
-    query_embd = request.embd
-    print(query_embd)
+    embd = SentenceTransformer(model_name_or_path='Lajavaness/bilingual-embedding-base', trust_remote_code=True, device='cpu')
+    query_embd = embd.encode(request.embd)
     return { "embedding": query_embd }
 
 @router.post("/sentence")
