@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 
 router = APIRouter()
 
+load_dotenv()
+
 SUPABASE_URL = os.getenv("NEXT_PUBLIC_SUPABASE_URL")
 SUPABASE_KEY = os.getenv("NEXT_PUBLIC_SUPABASE_ANON_KEY")
 
@@ -12,8 +14,7 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 @router.get("/test")
 async def get():
-    response = supabase.table("test").select("*").execute()
-    print(response)
+    response = supabase.table("embd").select("*").execute()
     return response.data
 
 @router.post("/test")
