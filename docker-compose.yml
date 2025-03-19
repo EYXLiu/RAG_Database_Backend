@@ -1,0 +1,16 @@
+services:
+  redis:
+    image: "redis:latest"
+    container_name: redis-server
+    restart: always
+    ports:
+      - "6379:6379"
+
+  rag-api:
+    build: .
+    container_name: RAG_backend
+    restart: always
+    depends_on:
+      - redis
+    ports:
+      - "8000:8000"

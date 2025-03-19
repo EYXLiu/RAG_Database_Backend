@@ -43,6 +43,7 @@ python-dotenv==1.0.1
 pytz==2025.1
 PyYAML==6.0.2
 realtime==2.4.1
+redis==5.2.1
 regex==2024.11.6
 requests==2.32.3
 safetensors==0.5.3
