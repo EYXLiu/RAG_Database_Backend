@@ -56,7 +56,7 @@ def update_cache():
     redis_client.set("embeddings", pickle.dumps((embeddings, data)))
     redis_client.set("last_updated", latest)
 
-@router.get("/sentence")
+@router.get("/embeddings")
 async def get(request: SentenceRequest):
     embd = SentenceTransformer(model_name_or_path='Lajavaness/bilingual-embedding-small', trust_remote_code=True, device='cpu')
     query_embd = embd.encode(request.text).tolist()
@@ -84,7 +84,7 @@ async def get(request: SentenceRequest):
     
     return {"matches": [{"text": match[0]['text'], "score": match[1]} for match in cos]}
 
-@router.post("/sentence")
+@router.post("/embeddings")
 async def post(request: SentenceUpload):
     embd = SentenceTransformer(model_name_or_path='Lajavaness/bilingual-embedding-small', trust_remote_code=True, device='cpu')
     query_embd = embd.encode(request.text).tolist()
