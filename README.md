@@ -1,5 +1,6 @@
 # RAG Database Backend
-Refer to [RAG_Database_Website](https://github.com/EYXLiu/RAG_Database_Website) for the NextJS Frontend
+Refer to [RAG_Database_Website](https://github.com/EYXLiu/RAG_Database_Website) for the NextJS Frontend <br/>
+Tech Stack: Python, FastAPI, Supabase, Redis caching, docker, docker-compile, Numpy, Pandas, HuggingFace Transformers
 
 # About
 * Currently not deployed as trying to reduce the docker image size for better Oracle Cloud Containerizing (currently 6gb o.O)
