@@ -1,5 +1,4 @@
 # RAG Database Backend
-Refer to [RAG_Database_Website](https://github.com/EYXLiu/RAG_Database_Website) for the NextJS Frontend <br/>
 Tech Stack: Python, FastAPI, Supabase, Redis caching, docker, docker-compile, Numpy, Pandas, HuggingFace Transformers
 
 # About
@@ -17,3 +16,5 @@ Tech Stack: Python, FastAPI, Supabase, Redis caching, docker, docker-compile, Nu
 * In the .env file, the Redis host should be 'redis-server' and the port should be '6379', which is declared in the docker-compose.yml file
 * The API endpoint is now set to `0.0.0.0:8000`
 * To stop, run `docker-compile down` to stop the images 
+
+#### Refer to [RAG_Database_Website](https://github.com/EYXLiu/RAG_Database_Website) for the NextJS Frontend 
