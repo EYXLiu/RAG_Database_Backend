@@ -1,5 +1,5 @@
 # RAG Database Backend
-Tech Stack: Python, FastAPI, Supabase, Redis caching, docker, docker-compile, Numpy, Pandas, HuggingFace Transformers
+Tech Stack: Python, FastAPI, Supabase, Redis caching, docker, docker-compile, Oracle Cloud, Numpy, Pandas, HuggingFace Transformers
 
 # About
 * Currently not deployed as trying to reduce the docker image size for better Oracle Cloud Containerizing (currently 6gb o.O)
