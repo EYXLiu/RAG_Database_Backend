@@ -3,6 +3,7 @@ Refer to [RAG_Database_Website](https://github.com/EYXLiu/RAG_Database_Website) 
 
 # About
 * Currently not deployed as trying to reduce the docker image size for better Oracle Cloud Containerizing (currently 6gb o.O)
+* Note, Oracle also believes it will take too much memory this is so sad 😔
 * FastAPI endpoints to send requests to Supabase to grab the stored embeddings and texts
 * Due to Supabase Limitations (rpc doesn't allow setof returns), a Redis Cache is created for faster data retrival
 * Dockerized using docker-compile to run both redis and uvicorn endpoints, setup for images for Oracle Cloud deployment
