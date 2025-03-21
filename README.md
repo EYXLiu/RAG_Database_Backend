@@ -3,7 +3,7 @@ Tech Stack: Python, FastAPI, Supabase, Redis caching, docker, docker-compile, Or
 
 # About
 * Currently not deployed as trying to reduce the docker image size for better Oracle Cloud Containerizing (currently 6gb o.O)
-* Note, Oracle also believes it will take too much memory this is so sad 😔
+* Note, Oracle also believes it will take too much memory this is so sad 😔, and does not allow docker-compile to run
 * FastAPI endpoints to send requests to Supabase to grab the stored embeddings and texts
 * Due to Supabase Limitations (rpc doesn't allow setof returns), a Redis Cache is created for faster data retrival
 * Dockerized using docker-compile to run both redis and uvicorn endpoints, setup for images for Oracle Cloud deployment
