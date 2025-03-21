@@ -6,7 +6,7 @@ Refer to [RAG_Database_Website](https://github.com/EYXLiu/RAG_Database_Website) 
 * FastAPI endpoints to send requests to Supabase to grab the stored embeddings and texts
 * Due to Supabase Limitations (rpc doesn't allow setof returns), a Redis Cache is created for faster data retrival
 * Dockerized using docker-compile to run both redis and uvicorn endpoints, setup for images for Oracle Cloud deployment
-* Oracle Cloud deployment work in progress as the image size is ~6gb and trying to optimize it
+* Used Oracle Cloud and SSH to upload files and run on an Oracle Cloud instance, containerized and deployed on an Oracle Cloud container
 * Set up Cosine Similarity using an optimized numpy function to return the most relevant embeddings
 * Created FastAPI endpoints to both set and get data from Supabase
 
