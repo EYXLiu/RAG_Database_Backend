@@ -12,7 +12,7 @@ Refer to [RAG_Database_Website](https://github.com/EYXLiu/RAG_Database_Website) 
 * Created FastAPI endpoints to both set and get data from Supabase
 
 # Docker deployment
-* Run `docker-compile up --build` to create the docker images -- make sure you have `docker v2.32.4`
+* Run `docker-compile up --build` to create the docker images - make sure you have `docker v2.32.4`
 * In the .env file, the Redis host should be 'redis-server' and the port should be '6379', which is declared in the docker-compose.yml file
 * The API endpoint is now set to `0.0.0.0:8000`
 * To stop, run `docker-compile down` to stop the images 
