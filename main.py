@@ -1,12 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from routes import get_embeddings, test_sentence
+from routes import get_embeddings, get_embeddings_custom
 
 app = FastAPI()
 
 app.include_router(get_embeddings.router)
-app.include_router(test_sentence.router)
+app.include_router(get_embeddings_custom.router)
 
 origins = ["http://localhost:3000"]
 
