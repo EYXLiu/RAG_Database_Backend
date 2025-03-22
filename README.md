@@ -16,7 +16,7 @@ Tech Stack: Python, FastAPI, Supabase, Redis, docker, docker-compile, Oracle Clo
 * Created a custom BTree database class for a sorted database, allowing for local data management, as used in PostgreSQL
 * Database class includes the BTree, a dictionary for unordered storing of TXT file locations, a JSON file to store the unordered dictionary, and a TXT file to store the actual data
 * Wrote custom CRUD operations for Get, Post, Update, and Delete functions for the database
-* GET also includes current SQL functions like filtering, sorting, and getting top X rows, following SQL order of operations
+* GET also includes current SQL functions like filtering, sorting, and getting top X rows, following SQL order of operations and using regex for pattern matching in queries
 * Adapted FastAPI endpoints to use the custom database
 * Still using Redis Caching as reading from the TXT file is much slower due to I/O operations
 
