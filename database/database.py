@@ -13,7 +13,7 @@ class Database:
         self.columns: list = columns
         self.timestamp: bool = timestamp
         self.dbname: str = name + "_values.txt"
-        self.data: dict = self._load_data()
+        self.data: dict[int, int] = self._load_data()
         for i in self.data:
             self.btree.insert(i)
         
@@ -155,6 +155,3 @@ class Database:
             self.data.pop(key)
             self._save_data()
         return "Not found"
-            
-        
-            
