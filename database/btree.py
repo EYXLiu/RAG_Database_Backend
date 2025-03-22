@@ -218,3 +218,12 @@ class BTree:
                 count += self._count(child)
                 
         return count
+    
+    def max(self, node=None):
+        if node is None:
+            node = self.root
+            
+        if node.leaf:
+            return node.keys[-1] if node.keys else None
+        
+        return self.max(node.children[-1])

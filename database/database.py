@@ -106,7 +106,7 @@ class Database:
         return tree
     
     def post(self, value: dict):
-        key = str(len(self.btree))
+        key = self.btree.max() + 1
         
         if not self.columns:
             self.columns = list(value.keys())
