@@ -18,7 +18,7 @@ Tech Stack: Python, FastAPI, Supabase, Redis, docker, docker-compile, Oracle Clo
 * Wrote custom CRUD operations for Get, Post, Update, and Delete functions for the database
 * GET also includes current SQL functions like filtering, sorting, and getting top X rows, following SQL order of operations and using regex for pattern matching in queries
 * Adapted FastAPI endpoints to use the custom database
-* Still using Redis Cacheing as reading from the TXT file is much slower due to I/O operations
+* Still using Redis Caching as reading from the TXT file is much slower due to I/O operations
 
 # Docker deployment
 * Run `docker-compile up --build` to create the docker images - make sure you have `docker v2.32.4`
