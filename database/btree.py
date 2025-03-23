@@ -25,7 +25,7 @@ class BTree:
         
         return self.search(key, node.children[i])
     
-    def insert(self, key):
+    def insert(self, key: int):
         root = self.root
         if len(root.keys) == (2 * self.t) - 1:
             new_root = BTreeNode(leaf=False)
@@ -37,7 +37,6 @@ class BTree:
         
     def insert_non_full(self, node, key):
         i = len(node.keys) - 1
-        
         if node.leaf:
             node.keys.append(None)
             while i >= 0 and key < node.keys[i]:
@@ -220,10 +219,11 @@ class BTree:
         return count
     
     def max(self, node=None):
+        
         if node is None:
             node = self.root
-            
+        
         if node.leaf:
-            return node.keys[-1] if node.keys else None
+            return int(node.keys[-1]) if node.keys else 0
         
         return self.max(node.children[-1])

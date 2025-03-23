@@ -4,7 +4,7 @@ import re
 
 from datetime import datetime
 
-from btree import BTree
+from database.btree import BTree
 
 class Database:
     def __init__(self, name: str, t: int=2, columns: list[str]=None, timestamp: bool=False):
@@ -20,7 +20,7 @@ class Database:
     def _load_data(self):
         if os.path.exists(self.filename):
             with open(self.filename, 'r') as f:
-                return json.loads(f)
+                return json.load(f)
         return {}
     
     def _save_data(self):
@@ -49,7 +49,7 @@ class Database:
             position = f.tell()
             j = {key: value}
             if self.timestamp:
-                j['timestamp'] = datetime.now()
+                j['timestamp'] = datetime.now().isoformat()
             record = json.dumps(j) + '\n'
             f.write(record)
         
@@ -68,18 +68,27 @@ class Database:
                 return record
         return "Not found"
     
+    def get_row(self, key: int):
+        key = str(key)
+        if self.btree.search(key):
+            position = self.data[key]
+            with open(self.dbname, 'r') as f:
+                f.seek(position)
+                return json.loads(f.readline().strip())
+        else: print("Not found", key)
+    
     def get(self, value: str='*', where: str=None, sortby: str=None, desc: bool=False, top: int=None):
         l = self.btree.traverse()
         if top is not None:
             if desc:
-                l = l[top:]
-            else: 
                 l = l[:top]
+            else: 
+                l = l[len(l)-top:]
         tree = []
-        value = value.strip()
-        where = where.strip()
+        if value: value = value.strip()
+        if where: where = where.strip()
         for i in l:
-            j = self.get(i)
+            j = self.get_row(i)
             if where is None:
                 if value == '*':
                     tree.append(j)
@@ -105,20 +114,23 @@ class Database:
         
         return tree
     
-    def post(self, value: dict):
+    def post(self, value: dict): 
         key = self.btree.max() + 1
-        
+        key = str(key)
+
         if not self.columns:
             self.columns = list(value.keys())
         else:
             for k in self.columns:
                 assert k in value.keys()
-
+        
+        
+        
         with open(self.dbname, 'a') as f:
             position = f.tell()
             j = {key: value}
             if self.timestamp:
-                j['timestamp'] = datetime.now()
+                j['timestamp'] = datetime.now().isoformat()
             record = json.dumps(j) + '\n'
             f.write(record)
         self.btree.insert(key)
@@ -136,7 +148,7 @@ class Database:
                 position = f.tell()
                 j = {key: value}
                 if self.timestamp:
-                    j['timestamp'] = datetime.now()
+                    j['timestamp'] = datetime.now().isoformat()
                 record = json.dumps(j) + '\n'
                 f.write(record)
             self.data[key] = position
