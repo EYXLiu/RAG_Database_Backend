@@ -124,8 +124,6 @@ class Database:
             for k in self.columns:
                 assert k in value.keys()
         
-        
-        
         with open(self.dbname, 'a') as f:
             position = f.tell()
             j = {key: value}
@@ -139,22 +137,27 @@ class Database:
                 
     def update(self, key: int, value: dict):
         key = str(key)
+        
+        if not self.columns:
+            self.columns = list(value.keys())
+        else:
+            for k in self.columns:
+                assert k in value.keys()
+                
         if self.btree.search(key):
             position = self.data[key]
             with open(self.dbname, 'r+') as f:
                 f.seek(position)
                 f.write("#DELETED#")
-            with open(self.dbname, 'a') as f:
-                position = f.tell()
-                j = {key: value}
-                if self.timestamp:
-                    j['timestamp'] = datetime.now().isoformat()
-                record = json.dumps(j) + '\n'
-                f.write(record)
-            self.data[key] = position
-            self._save_data()
-        else:
-            self.post(value)
+        with open(self.dbname, 'a') as f:
+            position = f.tell()
+            j = {key: value}
+            if self.timestamp:
+                j['timestamp'] = datetime.now().isoformat()
+            record = json.dumps(j) + '\n'
+            f.write(record)
+        self.data[key] = position
+        self._save_data()
     
     def delete(self, key: int):
         key = str(key)
