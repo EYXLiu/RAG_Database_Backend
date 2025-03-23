@@ -164,6 +164,7 @@ class Database:
                 f.seek(position)
                 f.write("#DELETED#")
             self.btree.delete(key)
-            self.data.pop(key)
             self._save_data()
-        return "Not found"
+            return {"key": key}
+        else: 
+            return "Not found"

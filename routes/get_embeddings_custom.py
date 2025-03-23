@@ -22,13 +22,6 @@ REDIS_HOST = os.getenv("NEXT_REDIS_HOST")
 REDIS_PORT = os.getenv("NEXT_REDIS_PORT")
 
 db = Database("custom", columns=['title', 'text', 'embd'], timestamp=True)
-
-class SentenceRequest(BaseModel):
-    text: str
-    
-class SentenceUpload(BaseModel):
-    title: str
-    text: str
     
 redis_client = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=0)
 
@@ -58,8 +51,11 @@ def update_cache():
     redis_client.set("embeddings", pickle.dumps((embeddings, response)))
     redis_client.set("last_updated", latest)
 
+class SentenceGet(BaseModel):
+    text: str
+    
 @router.get("/dbembeddings")
-async def get(request: SentenceRequest):
+async def get(request: SentenceGet):
     embd = SentenceTransformer(model_name_or_path='Lajavaness/bilingual-embedding-small', trust_remote_code=True, device='cpu')
     query_embd = embd.encode(request.text).tolist()
     
@@ -89,8 +85,13 @@ async def get(request: SentenceRequest):
     
     return {"matches": [{"text": list(match[0].values())[0]['text'], "score": match[1]} for match in cos]}
 
+
+class SentencePost(BaseModel):
+    title: str
+    text: str
+
 @router.post("/dbembeddings")
-async def post(request: SentenceUpload):
+async def post(request: SentencePost):
     embd = SentenceTransformer(model_name_or_path='Lajavaness/bilingual-embedding-small', trust_remote_code=True, device='cpu')
     query_embd = embd.encode(request.text).tolist()
     
@@ -100,7 +101,41 @@ async def post(request: SentenceUpload):
         "embd": query_embd
     }
     try:
-        response = db.post(embedding)
+        db.post(embedding)
+        return request
+    except Exception as e:
+        return HTTPException(status_code=500, detail=e)
+
+
+class SentenceUpdate(BaseModel):
+    key: int
+    title: str
+    text: str
+
+@router.put("/dbembeddings")
+async def update(request: SentenceUpdate):
+    embd = SentenceTransformer(model_name_or_path='Lajavaness/bilingual-embedding-small', trust_remote_code=True, device='cpu')
+    query_embd = embd.encode(request.text).tolist()
+    
+    embedding = {
+        "title": request.title,
+        "text": request.text, 
+        "embd": query_embd
+    }
+    try:
+        db.update(request.key, embedding)
+        return request
+    except Exception as e:
+        return HTTPException(status_code=500, detail=e)
+
+
+class SentenceDelete(BaseModel):
+    key: int
+    
+@router.delete("/dbembeddings")
+async def delete(request: SentenceDelete):
+    try:
+        response = db.delete(request.key)
         return response
     except Exception as e:
         return HTTPException(status_code=500, detail=e)
