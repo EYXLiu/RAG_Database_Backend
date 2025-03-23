@@ -1,5 +1,5 @@
 # RAG Database Backend
-Tech Stack: Python, FastAPI, Supabase, Redis, docker, docker-compile, Oracle Cloud, Numpy, Pandas, HuggingFace Transformers
+Tech Stack: Python, FastAPI, Supabase, Redis, docker, docker-compile, Postman, Oracle Cloud, Numpy, Pandas, HuggingFace Transformers
 
 # About
 * Currently not deployed as trying to reduce the docker image size for better Oracle Cloud Containerizing (currently 6gb o.O)
@@ -11,6 +11,7 @@ Tech Stack: Python, FastAPI, Supabase, Redis, docker, docker-compile, Oracle Clo
 * Set up Cosine Similarity using an optimized numpy function to return the most relevant embeddings
 * Created FastAPI endpoints to both set and get data from Supabase
 * Created a custom JSON and TXT database in replacement for Supabase, more details below
+* API Endpoints tested in both NextJS/Web fetch as well as Postman for testing
 
 # Custom Database Storage
 * Created a custom BTree database class for a sorted database, allowing for local data management, as used in PostgreSQL
