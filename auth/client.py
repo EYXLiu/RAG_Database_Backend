@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import copy
 import datetime
 
-from user_db import AuthDatabase
+from auth.user_db import AuthDatabase
 
 load_dotenv()
 

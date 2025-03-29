@@ -1,9 +1,8 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from dotenv import load_dotenv
-import redis 
 import datetime
-import jwt
+import redis
 
 import os
 import sys
@@ -16,7 +15,7 @@ load_dotenv()
 
 REDIS_HOST = os.getenv("NEXT_REDIS_HOST")
 REDIS_PORT = os.getenv("NEXT_REDIS_PORT")
-    
+
 redis_client = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=0)
 
 client = Client()
@@ -38,6 +37,8 @@ def signup(request: UserDetails):
 
 @router.get("/login")
 def login(request: UserDetails):
+    if blacklisted(request.token):
+        return HTTPException(status_code=500, detail="blacklisted")
     s = Client.login(request.email, request.password)
     if "error" in s:
         return HTTPException(status_code=500, detail=s['error'])
@@ -72,4 +73,6 @@ def update(request: JWTToken):
     s = Client.update_data(request.token)
     if "error" in s:
         return HTTPException(status_code=500, detail=s['error'])
+    ttl = max(0, s['success'] - datetime.datetime.now(datetime.UTC()))
+    redis_client.setex((f"blacklist:{request.token}", ttl))
     return s

@@ -4,9 +4,9 @@ from sentence_transformers import SentenceTransformer
 import os
 from dotenv import load_dotenv
 import numpy as np
-import redis 
 import pickle
-from datetime import datetime
+import datetime
+import redis
 
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -18,7 +18,7 @@ load_dotenv()
 
 REDIS_HOST = os.getenv("NEXT_REDIS_HOST")
 REDIS_PORT = os.getenv("NEXT_REDIS_PORT")
-    
+
 redis_client = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=0)
 
 db = Database("custom", columns=['title', 'text', 'embd'], timestamp=True)
@@ -42,7 +42,7 @@ def update_cache():
     embeddings = np.array([np.array((list(record.values())[0]['embd']), dtype=np.float32) for record in response])
     
     if len(response) == 0:
-        latest = datetime.now().isoformat()
+        latest = datetime.datetime.now(datetime.UTC()).isoformat()
     else:
         latest = (db.get(value='timestamp', sortby='timestamp', desc=True, top=1))[0]['timestamp']
     
