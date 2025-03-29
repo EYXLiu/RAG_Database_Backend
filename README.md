@@ -1,5 +1,5 @@
 # RAG Database Backend
-Tech Stack: Python, FastAPI, Supabase, Redis, docker, docker-compile, Postman, Oracle Cloud, Numpy, Pandas, HuggingFace Transformers
+Tech Stack: Python, FastAPI, Supabase, Redis, docker, docker-compile, Postman, JWT, Oracle Cloud, Numpy, Pandas, HuggingFace Transformers
 
 # About
 * Currently not deployed as trying to reduce the docker image size for better Oracle Cloud Containerizing (currently 6gb o.O)
@@ -11,6 +11,7 @@ Tech Stack: Python, FastAPI, Supabase, Redis, docker, docker-compile, Postman, O
 * Set up Cosine Similarity using an optimized numpy function to return the most relevant embeddings
 * Created FastAPI endpoints to both set and get data from Supabase
 * Created a custom JSON and TXT database in replacement for Supabase, more details below
+* Created custom Authentication API endpoints using JWT for secure data transfer, more details below
 * API Endpoints tested in both NextJS/Web fetch as well as Postman for testing
 
 # Custom Database Storage
@@ -20,6 +21,12 @@ Tech Stack: Python, FastAPI, Supabase, Redis, docker, docker-compile, Postman, O
 * GET also includes current SQL functions like filtering, sorting, and getting top X rows, following SQL order of operations and using regex for pattern matching in queries
 * Adapted FastAPI endpoints to use the custom database
 * Still using Redis Caching as reading from the TXT file is much slower due to I/O operations
+
+# Custom Secure Authentication
+* Created custom Authentication classes on both frontend and backend for login
+* Used same database as above for storage, updating whenever called and on logout
+* Uses JWT for secure data transfer, as well as JWT timeouts for security reasons
+* Uses Redis caching for logout/blacklisted tokens also for security reasons, including a timeout to save memory for invalid tokens
 
 # Docker deployment
 * Run `docker-compile up --build` to create the docker images - make sure you have `docker v2.32.4`
