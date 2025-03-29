@@ -2,16 +2,14 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from sentence_transformers import SentenceTransformer
 import os
-import json
 from dotenv import load_dotenv
 import numpy as np
-import ast
 import redis 
 import pickle
 from datetime import datetime
 
 import sys
-sys.path.append('../database')
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from database.database import Database
 
 router = APIRouter()
@@ -20,10 +18,10 @@ load_dotenv()
 
 REDIS_HOST = os.getenv("NEXT_REDIS_HOST")
 REDIS_PORT = os.getenv("NEXT_REDIS_PORT")
-
-db = Database("custom", columns=['title', 'text', 'embd'], timestamp=True)
     
 redis_client = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=0)
+
+db = Database("custom", columns=['title', 'text', 'embd'], timestamp=True)
 
 def cache_outdated():
     response = db.get(value='timestamp', sortby='timestamp', desc=True, top=1)
