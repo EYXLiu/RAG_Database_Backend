@@ -24,7 +24,7 @@ class Client:
             data['exp'] = expiration
             return { "data": jwt.encode(data, os.getenv("JWT_SECRET_KEY"), algorithm="HS256") }
         else:
-            return {"error": "User already exists"}
+            return { "error": "User already exists" }
     
     def login(self, email, password):
         if self.db.search(email) != "Not found":
@@ -55,11 +55,12 @@ class Client:
     def update_data(self, token, new):
         try:
             payload = jwt.decode(token, os.getenv("JWT_SECRET_KEY"), algorithms=["HS256"])
+            prev = payload['timestamp']
             payload['data'] = new
             payload['timestamp'] = datetime.datetime.now(datetime.UTC()).isoformat()
             payload['exp'] =  datetime.datetime.now(datetime.UTC()) + datetime.timedelta(minutes=60)
             self.db.update(payload['email'], payload)
-            return { "success": jwt.encode(payload, os.getenv("JWT_SECRET_KEY"), algorithm="HS256") }
+            return { "success": jwt.encode(payload, os.getenv("JWT_SECRET_KEY"), algorithm="HS256"), "prev": prev }
         except jwt.ExpiredSignatureError:
             return { "error": "Token has expired" }
         except jwt.InvalidTokenError:

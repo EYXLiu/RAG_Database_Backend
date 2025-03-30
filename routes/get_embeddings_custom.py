@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel
 from sentence_transformers import SentenceTransformer
 import os
@@ -48,14 +48,12 @@ def update_cache():
     
     redis_client.set("embeddings", pickle.dumps((embeddings, response)))
     redis_client.set("last_updated", latest)
-
-class SentenceGet(BaseModel):
-    text: str
     
 @router.get("/dbembeddings")
-async def get(request: SentenceGet):
+async def get(request: Request):
     embd = SentenceTransformer(model_name_or_path='Lajavaness/bilingual-embedding-small', trust_remote_code=True, device='cpu')
-    query_embd = embd.encode(request.text).tolist()
+    text = request.query_params.get("text")
+    query_embd = embd.encode(text).tolist()
     
     if not cache_outdated():
         update_cache()

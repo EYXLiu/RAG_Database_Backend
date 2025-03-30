@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel
 from dotenv import load_dotenv
 import datetime
@@ -36,10 +36,10 @@ def signup(request: UserDetails):
     return s
 
 @router.get("/login")
-def login(request: UserDetails):
-    if blacklisted(request.token):
-        return HTTPException(status_code=500, detail="blacklisted")
-    s = Client.login(request.email, request.password)
+def login(request: Request):
+    email = request.query_params.get("email")
+    password = request.query_params.get("password")
+    s = Client.login(email, password)
     if "error" in s:
         return HTTPException(status_code=500, detail=s['error'])
     s['success'] = "User successfully logged in"
@@ -49,7 +49,7 @@ class UserLogout(BaseModel):
     email: str
     token: str
 
-@router.get("/logout")
+@router.post("/logout")
 def logout(request: UserLogout):
     s = Client.logout(request.token)
     if "error" in s:
@@ -58,21 +58,24 @@ def logout(request: UserLogout):
     redis_client.setex((f"blacklist:{request.token}", ttl))
     return { "success": "User successfully logged out" }
 
-class JWTToken(BaseModel):
-    token: str
 
 @router.get("/user/get")
-def get(request: JWTToken):
-    s = Client.get_data(request.token)
+def get(request: Request):
+    token = request.query_params.get("jwt")
+    s = Client.get_data(token)
     if "error" in s:
         return HTTPException(status_code=500, detail=s['error'])
     return s
 
+class JWTToken(BaseModel):
+    token: str
+    new: str
+
 @router.put("/user/update")
 def update(request: JWTToken):
-    s = Client.update_data(request.token)
+    s = Client.update_data(request.token, request.new)
     if "error" in s:
         return HTTPException(status_code=500, detail=s['error'])
-    ttl = max(0, s['success'] - datetime.datetime.now(datetime.UTC()))
+    ttl = max(0, s['prev'] - datetime.datetime.now(datetime.UTC()))
     redis_client.setex((f"blacklist:{request.token}", ttl))
     return s
