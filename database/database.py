@@ -43,7 +43,9 @@ class Database:
             position = self.data[key]
             with open(self.dbname, 'r+') as f:
                 f.seek(position)
-                f.write("#DELETED#")
+                line = f.readline()
+                f.seek(position)
+                f.write("#DELETED#"[:len(line) - 1].ljust(len(line) - 1))
         
         with open(self.dbname, 'a') as f:
             position = f.tell()
@@ -148,7 +150,9 @@ class Database:
             position = self.data[key]
             with open(self.dbname, 'r+') as f:
                 f.seek(position)
-                f.write("#DELETED#")
+                line = f.readline()
+                f.seek(position)
+                f.write("#DELETED#"[:len(line) - 1].ljust(len(line) - 1))
         with open(self.dbname, 'a') as f:
             position = f.tell()
             j = {key: value}
@@ -165,7 +169,9 @@ class Database:
             position = self.data[key]
             with open(self.dbname, 'r+') as f:
                 f.seek(position)
-                f.write("#DELETED#")
+                line = f.readline()
+                f.seek(position)
+                f.write("#DELETED#"[:len(line) - 1].ljust(len(line) - 1))
             self.btree.delete(key)
             self._save_data()
             return {"key": key}
