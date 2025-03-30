@@ -4,12 +4,11 @@ Tech Stack: Python, FastAPI, Supabase, Redis, docker, docker-compile, Postman, J
 # About
 * Currently not deployed as trying to reduce the docker image size for better Oracle Cloud Containerizing (currently 6gb o.O)
 * Note, Oracle also believes it will take too much memory this is so sad 😔, and does not allow docker to compile the images
-* FastAPI endpoints to send requests to Supabase to grab the stored embeddings and texts
+* FastAPI endpoints to send requests to both Supabase and the Custom Database to grab the stored embeddings and texts
 * Due to Supabase Limitations (rpc doesn't allow setof returns), a Redis Cache is created for faster data retrival
 * Dockerized using docker-compile to run both redis and uvicorn endpoints, setup for images for Oracle Cloud deployment
 * Used Oracle Cloud and SSH to upload files and run on an Oracle Cloud instance, containerized and deployed on an Oracle Cloud container
 * Set up Cosine Similarity using an optimized numpy function to return the most relevant embeddings
-* Created FastAPI endpoints to both set and get data from Supabase
 * Created a custom JSON and TXT database in replacement for Supabase, more details below
 * Created custom Authentication API endpoints using JWT for secure data transfer, more details below
 * API Endpoints tested in both NextJS/Web fetch as well as Postman for testing
