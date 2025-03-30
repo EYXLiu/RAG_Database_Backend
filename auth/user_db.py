@@ -69,7 +69,7 @@ class AuthDatabase:
                 line = f.readline()
                 f.seek(position)
                 f.write("#DELETED#"[:len(line) - 1].ljust(len(line) - 1))
-        with open(self.dbname, 'a') as f:x
+        with open(self.dbname, 'a') as f:
             position = f.tell()
             j = {email: value}
             j['timestamp'] = datetime.now().isoformat()

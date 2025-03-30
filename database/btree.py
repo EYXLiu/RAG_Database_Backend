@@ -8,6 +8,7 @@ class BTree:
     def __init__(self, t=2):
         self.root = BTreeNode(leaf=True)
         self.t = t
+        self.size = 0
         
     def search(self, key, node=None):
         if node is None:
@@ -27,6 +28,7 @@ class BTree:
     
     def insert(self, key: int):
         root = self.root
+        self.size += 1
         if len(root.keys) == (2 * self.t) - 1:
             new_root = BTreeNode(leaf=False)
             new_root.children.append(self.root)
@@ -71,7 +73,8 @@ class BTree:
     def delete(self, key, node=None):
         if node is None:
             node = self.root
-
+            
+        self.size -= 1
         t = self.t
         idx = self.find_key(node, key)
         
@@ -206,20 +209,9 @@ class BTree:
         return l
             
     def __len__(self):
-        return self._count(self.root)
-    
-    def _count(self, node):
-        if node is None:
-            return 0
-        count = len(node.keys)
-        if not node.leaf:
-            for child in node.children:
-                count += self._count(child)
-                
-        return count
+        return self.size
     
     def max(self, node=None):
-        
         if node is None:
             node = self.root
         
